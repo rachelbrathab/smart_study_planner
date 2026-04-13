@@ -1,0 +1,24 @@
+{
+  "step": "Step 7",
+  "name": "Exploratory Data Analysis",
+  "input_dataset": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/study_sessions_raw.csv",
+  "rows": 1000,
+  "columns": 7,
+  "numeric_summary_csv": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_07_eda_numeric_summary.csv",
+  "missing_values_by_column": {
+    "study_hours": 50,
+    "session_duration": 0,
+    "breaks_taken": 50,
+    "subject_difficulty": 0,
+    "time_of_day": 0,
+    "productivity_score": 50,
+    "session_completed": 0
+  },
+  "plots_generated": [
+    "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots/eda_class_distribution.png",
+    "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots/eda_numeric_distributions.png",
+    "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots/eda_correlation_heatmap.png"
+  ],
+  "created_at": "2026-04-11T07:57:15.647708Z",
+  "status": "completed"
+}

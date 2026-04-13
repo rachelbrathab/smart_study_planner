@@ -1,0 +1,15 @@
+{
+  "step": "Step 4",
+  "name": "Evaluation Metrics",
+  "task_type": "binary_classification",
+  "metrics": [
+    "accuracy",
+    "precision",
+    "recall",
+    "f1"
+  ],
+  "primary_metric": "f1",
+  "justification": "F1 balances precision and recall, while accuracy, precision, and recall provide complementary performance views.",
+  "created_at": "2026-04-11T07:57:14.966575Z",
+  "status": "completed"
+}

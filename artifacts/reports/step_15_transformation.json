@@ -1,0 +1,68 @@
+{
+  "step": "Step 15",
+  "name": "Transformation",
+  "inputs": {
+    "train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_engineered.csv",
+    "validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_engineered.csv",
+    "test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_engineered.csv"
+  },
+  "outputs": {
+    "x_train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_transformed.csv",
+    "x_validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_transformed.csv",
+    "x_test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_transformed.csv",
+    "y_train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/y_train.csv",
+    "y_validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/y_validation.csv",
+    "y_test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/y_test.csv",
+    "preprocessor": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/preprocessor_step_15.joblib"
+  },
+  "numeric_features_scaled": [
+    "study_hours",
+    "session_duration",
+    "breaks_taken",
+    "productivity_score",
+    "efficiency",
+    "study_intensity",
+    "difficulty_code",
+    "difficulty_burden",
+    "productive_pace"
+  ],
+  "categorical_features_encoded": [
+    "subject_difficulty",
+    "time_of_day"
+  ],
+  "transformed_feature_count": 16,
+  "transformed_feature_names": [
+    "num__study_hours",
+    "num__session_duration",
+    "num__breaks_taken",
+    "num__productivity_score",
+    "num__efficiency",
+    "num__study_intensity",
+    "num__difficulty_code",
+    "num__difficulty_burden",
+    "num__productive_pace",
+    "cat__subject_difficulty_easy",
+    "cat__subject_difficulty_hard",
+    "cat__subject_difficulty_medium",
+    "cat__time_of_day_afternoon",
+    "cat__time_of_day_evening",
+    "cat__time_of_day_morning",
+    "cat__time_of_day_night"
+  ],
+  "shapes": {
+    "x_train": [
+      700,
+      16
+    ],
+    "x_validation": [
+      150,
+      16
+    ],
+    "x_test": [
+      150,
+      16
+    ]
+  },
+  "created_at": "2026-04-11T07:57:15.786019Z",
+  "status": "completed"
+}

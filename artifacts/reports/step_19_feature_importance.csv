@@ -1,0 +1,17 @@
+feature,importance
+num__productivity_score,0.4054516785524161
+num__session_duration,0.20100927064269933
+num__study_intensity,0.11676159678622851
+num__study_hours,0.10151028364909398
+num__difficulty_burden,0.05754013056840214
+num__productive_pace,0.04308201720804703
+num__efficiency,0.034242505276803864
+num__breaks_taken,0.020581699795122605
+num__difficulty_code,0.003908164714764946
+cat__time_of_day_morning,0.0037710967852857824
+cat__time_of_day_evening,0.0024565314642822776
+cat__subject_difficulty_hard,0.00230049850716296
+cat__time_of_day_afternoon,0.0022712558057312914
+cat__subject_difficulty_medium,0.0022076846162796017
+cat__subject_difficulty_easy,0.0014986703683113494
+cat__time_of_day_night,0.0014069152593682711

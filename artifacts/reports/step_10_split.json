@@ -1,0 +1,38 @@
+{
+  "step": "Step 10",
+  "name": "Data Split",
+  "input_dataset": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/study_sessions_raw.csv",
+  "split_strategy": "stratified_train_val_test",
+  "target_column": "session_completed",
+  "split_ratio": {
+    "train": 0.7,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "row_counts": {
+    "train": 700,
+    "validation": 150,
+    "test": 150
+  },
+  "class_distribution": {
+    "train": {
+      "0": 350,
+      "1": 350
+    },
+    "validation": {
+      "0": 75,
+      "1": 75
+    },
+    "test": {
+      "0": 75,
+      "1": 75
+    }
+  },
+  "output_files": {
+    "train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_raw.csv",
+    "validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_raw.csv",
+    "test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_raw.csv"
+  },
+  "created_at": "2026-04-11T07:57:15.666868Z",
+  "status": "completed"
+}

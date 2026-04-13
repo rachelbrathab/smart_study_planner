@@ -1,0 +1,144 @@
+2026-04-11 13:03:16,336 | INFO | ml_pipeline.step_01_goal | Step 1 completed. Goal artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_01_goal.json
+2026-04-11 13:05:16,927 | INFO | ml_pipeline.step_02_task_type | Step 2 completed. Task type artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_02_task_type.json
+2026-04-11 13:06:16,678 | INFO | ml_pipeline.step_03_target | Step 3 completed. Target artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_03_target.json
+2026-04-11 13:06:46,726 | INFO | ml_pipeline.step_04_metrics | Step 4 completed. Metrics artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_04_metrics.json
+2026-04-11 13:07:22,662 | INFO | ml_pipeline.step_05_data_source | Step 5 completed. Data source artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_05_data_source.json
+2026-04-11 13:10:18,659 | INFO | ml_pipeline.step_06_ingestion | Step 6 completed. Raw dataset saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/study_sessions_raw.csv
+2026-04-11 13:10:18,659 | INFO | ml_pipeline.step_06_ingestion | Step 6 completed. Ingestion report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_06_ingestion.json
+2026-04-11 13:11:38,186 | INFO | ml_pipeline.step_07_eda | Step 7 completed. EDA report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_07_eda.json
+2026-04-11 13:11:38,186 | INFO | ml_pipeline.step_07_eda | Step 7 completed. EDA plots saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots
+2026-04-11 13:12:29,287 | INFO | ml_pipeline.step_08_data_quality | Step 8 completed. Data quality report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_08_data_quality.json
+2026-04-11 13:13:52,833 | INFO | ml_pipeline.step_09_label_quality | Step 9 completed. Label quality report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_09_label_quality.json
+2026-04-11 13:14:47,587 | INFO | ml_pipeline.step_10_split | Step 10 completed. Split files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:14:47,587 | INFO | ml_pipeline.step_10_split | Step 10 completed. Split report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_10_split.json
+2026-04-11 13:15:35,348 | INFO | ml_pipeline.step_11_cleaning | Step 11 completed. Cleaned files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:15:35,348 | INFO | ml_pipeline.step_11_cleaning | Step 11 completed. Cleaning report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_11_cleaning.json
+2026-04-11 13:16:24,113 | INFO | ml_pipeline.step_12_missing | Step 12 completed. Missing-value handled files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:16:24,113 | INFO | ml_pipeline.step_12_missing | Step 12 completed. Missing-value report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_12_missing.json
+2026-04-11 13:17:23,258 | INFO | ml_pipeline.step_13_outliers | Step 13 completed. Outlier-handled files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:17:23,258 | INFO | ml_pipeline.step_13_outliers | Step 13 completed. Outlier report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_13_outliers.json
+2026-04-11 13:18:28,714 | INFO | ml_pipeline.step_14_feature_engineering | Step 14 completed. Engineered datasets saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:18:28,714 | INFO | ml_pipeline.step_14_feature_engineering | Step 14 completed. Feature engineering report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_14_feature_engineering.json
+2026-04-11 13:19:33,650 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Transformed datasets saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:19:33,650 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Preprocessor saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/preprocessor_step_15.joblib
+2026-04-11 13:19:33,650 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Transformation report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_15_transformation.json
+2026-04-11 13:20:16,120 | INFO | ml_pipeline.step_16_baseline | Step 16 completed. Baseline model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/baseline_logistic_regression.joblib
+2026-04-11 13:20:16,120 | INFO | ml_pipeline.step_16_baseline | Step 16 completed. Baseline report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_16_baseline.json
+2026-04-11 13:21:07,202 | INFO | ml_pipeline.step_17_training | Step 17 completed. Main model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/main_random_forest.joblib
+2026-04-11 13:21:07,202 | INFO | ml_pipeline.step_17_training | Step 17 completed. Main model report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_17_training.json
+2026-04-11 13:22:16,032 | INFO | ml_pipeline.step_18_tuning | Step 18 completed. Tuned model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/tuned_random_forest.joblib
+2026-04-11 13:22:16,033 | INFO | ml_pipeline.step_18_tuning | Step 18 completed. Tuning report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_18_tuning.json
+2026-04-11 13:23:12,621 | INFO | ml_pipeline.step_19_evaluation | Step 19 completed. Evaluation report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_19_evaluation.json
+2026-04-11 13:23:12,621 | INFO | ml_pipeline.step_19_evaluation | Step 19 completed. Confusion matrix plot saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots/evaluation_confusion_matrix.png
+2026-04-11 13:26:46,372 | INFO | ml_pipeline.runner | Starting 20-step ML pipeline run
+2026-04-11 13:26:46,372 | INFO | ml_pipeline.runner | Running Step 1
+2026-04-11 13:26:46,372 | INFO | ml_pipeline.step_01_goal | Step 1 completed. Goal artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_01_goal.json
+2026-04-11 13:26:46,372 | INFO | ml_pipeline.runner | Running Step 2
+2026-04-11 13:26:46,373 | INFO | ml_pipeline.step_02_task_type | Step 2 completed. Task type artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_02_task_type.json
+2026-04-11 13:26:46,373 | INFO | ml_pipeline.runner | Running Step 3
+2026-04-11 13:26:46,374 | INFO | ml_pipeline.step_03_target | Step 3 completed. Target artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_03_target.json
+2026-04-11 13:26:46,374 | INFO | ml_pipeline.runner | Running Step 4
+2026-04-11 13:26:46,374 | INFO | ml_pipeline.step_04_metrics | Step 4 completed. Metrics artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_04_metrics.json
+2026-04-11 13:26:46,374 | INFO | ml_pipeline.runner | Running Step 5
+2026-04-11 13:26:46,374 | INFO | ml_pipeline.step_05_data_source | Step 5 completed. Data source artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_05_data_source.json
+2026-04-11 13:26:46,374 | INFO | ml_pipeline.runner | Running Step 6
+2026-04-11 13:26:46,396 | INFO | ml_pipeline.step_06_ingestion | Step 6 completed. Raw dataset saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/study_sessions_raw.csv
+2026-04-11 13:26:46,396 | INFO | ml_pipeline.step_06_ingestion | Step 6 completed. Ingestion report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_06_ingestion.json
+2026-04-11 13:26:46,396 | INFO | ml_pipeline.runner | Running Step 7
+2026-04-11 13:26:47,074 | INFO | ml_pipeline.step_07_eda | Step 7 completed. EDA report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_07_eda.json
+2026-04-11 13:26:47,074 | INFO | ml_pipeline.step_07_eda | Step 7 completed. EDA plots saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots
+2026-04-11 13:26:47,074 | INFO | ml_pipeline.runner | Running Step 8
+2026-04-11 13:26:47,080 | INFO | ml_pipeline.step_08_data_quality | Step 8 completed. Data quality report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_08_data_quality.json
+2026-04-11 13:26:47,080 | INFO | ml_pipeline.runner | Running Step 9
+2026-04-11 13:26:47,083 | INFO | ml_pipeline.step_09_label_quality | Step 9 completed. Label quality report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_09_label_quality.json
+2026-04-11 13:26:47,083 | INFO | ml_pipeline.runner | Running Step 10
+2026-04-11 13:26:47,094 | INFO | ml_pipeline.step_10_split | Step 10 completed. Split files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:26:47,095 | INFO | ml_pipeline.step_10_split | Step 10 completed. Split report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_10_split.json
+2026-04-11 13:26:47,095 | INFO | ml_pipeline.runner | Running Step 11
+2026-04-11 13:26:47,114 | INFO | ml_pipeline.step_11_cleaning | Step 11 completed. Cleaned files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:26:47,114 | INFO | ml_pipeline.step_11_cleaning | Step 11 completed. Cleaning report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_11_cleaning.json
+2026-04-11 13:26:47,115 | INFO | ml_pipeline.runner | Running Step 12
+2026-04-11 13:26:47,129 | INFO | ml_pipeline.step_12_missing | Step 12 completed. Missing-value handled files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:26:47,129 | INFO | ml_pipeline.step_12_missing | Step 12 completed. Missing-value report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_12_missing.json
+2026-04-11 13:26:47,129 | INFO | ml_pipeline.runner | Running Step 13
+2026-04-11 13:26:47,148 | INFO | ml_pipeline.step_13_outliers | Step 13 completed. Outlier-handled files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:26:47,148 | INFO | ml_pipeline.step_13_outliers | Step 13 completed. Outlier report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_13_outliers.json
+2026-04-11 13:26:47,148 | INFO | ml_pipeline.runner | Running Step 14
+2026-04-11 13:26:47,167 | INFO | ml_pipeline.step_14_feature_engineering | Step 14 completed. Engineered datasets saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:26:47,167 | INFO | ml_pipeline.step_14_feature_engineering | Step 14 completed. Feature engineering report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_14_feature_engineering.json
+2026-04-11 13:26:47,167 | INFO | ml_pipeline.runner | Running Step 15
+2026-04-11 13:26:47,201 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Transformed datasets saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:26:47,201 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Preprocessor saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/preprocessor_step_15.joblib
+2026-04-11 13:26:47,201 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Transformation report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_15_transformation.json
+2026-04-11 13:26:47,202 | INFO | ml_pipeline.runner | Running Step 16
+2026-04-11 13:26:47,226 | INFO | ml_pipeline.step_16_baseline | Step 16 completed. Baseline model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/baseline_logistic_regression.joblib
+2026-04-11 13:26:47,226 | INFO | ml_pipeline.step_16_baseline | Step 16 completed. Baseline report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_16_baseline.json
+2026-04-11 13:26:47,226 | INFO | ml_pipeline.runner | Running Step 17
+2026-04-11 13:26:47,651 | INFO | ml_pipeline.step_17_training | Step 17 completed. Main model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/main_random_forest.joblib
+2026-04-11 13:26:47,651 | INFO | ml_pipeline.step_17_training | Step 17 completed. Main model report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_17_training.json
+2026-04-11 13:26:47,652 | INFO | ml_pipeline.runner | Running Step 18
+2026-04-11 13:26:56,965 | INFO | ml_pipeline.step_18_tuning | Step 18 completed. Tuned model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/tuned_random_forest.joblib
+2026-04-11 13:26:56,965 | INFO | ml_pipeline.step_18_tuning | Step 18 completed. Tuning report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_18_tuning.json
+2026-04-11 13:26:56,965 | INFO | ml_pipeline.runner | Running Step 19
+2026-04-11 13:26:57,094 | INFO | ml_pipeline.step_19_evaluation | Step 19 completed. Evaluation report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_19_evaluation.json
+2026-04-11 13:26:57,094 | INFO | ml_pipeline.step_19_evaluation | Step 19 completed. Confusion matrix plot saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots/evaluation_confusion_matrix.png
+2026-04-11 13:26:57,094 | INFO | ml_pipeline.runner | Running Step 20
+2026-04-11 13:26:57,183 | INFO | ml_pipeline.step_20_deployment | Step 20 completed. Deployment bundle saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/deployment_bundle.joblib
+2026-04-11 13:26:57,183 | INFO | ml_pipeline.step_20_deployment | Step 20 completed. Deployment report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_20_deployment.json
+2026-04-11 13:26:57,183 | INFO | ml_pipeline.runner | Pipeline completed successfully
+2026-04-11 13:27:14,965 | INFO | ml_pipeline.runner | Starting 20-step ML pipeline run
+2026-04-11 13:27:14,965 | INFO | ml_pipeline.runner | Running Step 1
+2026-04-11 13:27:14,965 | INFO | ml_pipeline.step_01_goal | Step 1 completed. Goal artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_01_goal.json
+2026-04-11 13:27:14,965 | INFO | ml_pipeline.runner | Running Step 2
+2026-04-11 13:27:14,966 | INFO | ml_pipeline.step_02_task_type | Step 2 completed. Task type artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_02_task_type.json
+2026-04-11 13:27:14,966 | INFO | ml_pipeline.runner | Running Step 3
+2026-04-11 13:27:14,966 | INFO | ml_pipeline.step_03_target | Step 3 completed. Target artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_03_target.json
+2026-04-11 13:27:14,966 | INFO | ml_pipeline.runner | Running Step 4
+2026-04-11 13:27:14,966 | INFO | ml_pipeline.step_04_metrics | Step 4 completed. Metrics artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_04_metrics.json
+2026-04-11 13:27:14,966 | INFO | ml_pipeline.runner | Running Step 5
+2026-04-11 13:27:14,967 | INFO | ml_pipeline.step_05_data_source | Step 5 completed. Data source artifact saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_05_data_source.json
+2026-04-11 13:27:14,967 | INFO | ml_pipeline.runner | Running Step 6
+2026-04-11 13:27:14,979 | INFO | ml_pipeline.step_06_ingestion | Step 6 completed. Raw dataset saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/study_sessions_raw.csv
+2026-04-11 13:27:14,979 | INFO | ml_pipeline.step_06_ingestion | Step 6 completed. Ingestion report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_06_ingestion.json
+2026-04-11 13:27:14,979 | INFO | ml_pipeline.runner | Running Step 7
+2026-04-11 13:27:15,648 | INFO | ml_pipeline.step_07_eda | Step 7 completed. EDA report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_07_eda.json
+2026-04-11 13:27:15,648 | INFO | ml_pipeline.step_07_eda | Step 7 completed. EDA plots saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots
+2026-04-11 13:27:15,648 | INFO | ml_pipeline.runner | Running Step 8
+2026-04-11 13:27:15,652 | INFO | ml_pipeline.step_08_data_quality | Step 8 completed. Data quality report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_08_data_quality.json
+2026-04-11 13:27:15,653 | INFO | ml_pipeline.runner | Running Step 9
+2026-04-11 13:27:15,655 | INFO | ml_pipeline.step_09_label_quality | Step 9 completed. Label quality report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_09_label_quality.json
+2026-04-11 13:27:15,655 | INFO | ml_pipeline.runner | Running Step 10
+2026-04-11 13:27:15,667 | INFO | ml_pipeline.step_10_split | Step 10 completed. Split files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:27:15,667 | INFO | ml_pipeline.step_10_split | Step 10 completed. Split report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_10_split.json
+2026-04-11 13:27:15,667 | INFO | ml_pipeline.runner | Running Step 11
+2026-04-11 13:27:15,687 | INFO | ml_pipeline.step_11_cleaning | Step 11 completed. Cleaned files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:27:15,687 | INFO | ml_pipeline.step_11_cleaning | Step 11 completed. Cleaning report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_11_cleaning.json
+2026-04-11 13:27:15,687 | INFO | ml_pipeline.runner | Running Step 12
+2026-04-11 13:27:15,701 | INFO | ml_pipeline.step_12_missing | Step 12 completed. Missing-value handled files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:27:15,702 | INFO | ml_pipeline.step_12_missing | Step 12 completed. Missing-value report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_12_missing.json
+2026-04-11 13:27:15,702 | INFO | ml_pipeline.runner | Running Step 13
+2026-04-11 13:27:15,725 | INFO | ml_pipeline.step_13_outliers | Step 13 completed. Outlier-handled files saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:27:15,725 | INFO | ml_pipeline.step_13_outliers | Step 13 completed. Outlier report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_13_outliers.json
+2026-04-11 13:27:15,725 | INFO | ml_pipeline.runner | Running Step 14
+2026-04-11 13:27:15,747 | INFO | ml_pipeline.step_14_feature_engineering | Step 14 completed. Engineered datasets saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:27:15,747 | INFO | ml_pipeline.step_14_feature_engineering | Step 14 completed. Feature engineering report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_14_feature_engineering.json
+2026-04-11 13:27:15,747 | INFO | ml_pipeline.runner | Running Step 15
+2026-04-11 13:27:15,786 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Transformed datasets saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data
+2026-04-11 13:27:15,786 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Preprocessor saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/preprocessor_step_15.joblib
+2026-04-11 13:27:15,786 | INFO | ml_pipeline.step_15_transformation | Step 15 completed. Transformation report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_15_transformation.json
+2026-04-11 13:27:15,786 | INFO | ml_pipeline.runner | Running Step 16
+2026-04-11 13:27:15,801 | INFO | ml_pipeline.step_16_baseline | Step 16 completed. Baseline model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/baseline_logistic_regression.joblib
+2026-04-11 13:27:15,801 | INFO | ml_pipeline.step_16_baseline | Step 16 completed. Baseline report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_16_baseline.json
+2026-04-11 13:27:15,801 | INFO | ml_pipeline.runner | Running Step 17
+2026-04-11 13:27:16,204 | INFO | ml_pipeline.step_17_training | Step 17 completed. Main model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/main_random_forest.joblib
+2026-04-11 13:27:16,204 | INFO | ml_pipeline.step_17_training | Step 17 completed. Main model report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_17_training.json
+2026-04-11 13:27:16,204 | INFO | ml_pipeline.runner | Running Step 18
+2026-04-11 13:27:26,009 | INFO | ml_pipeline.step_18_tuning | Step 18 completed. Tuned model saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/tuned_random_forest.joblib
+2026-04-11 13:27:26,009 | INFO | ml_pipeline.step_18_tuning | Step 18 completed. Tuning report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_18_tuning.json
+2026-04-11 13:27:26,010 | INFO | ml_pipeline.runner | Running Step 19
+2026-04-11 13:27:26,136 | INFO | ml_pipeline.step_19_evaluation | Step 19 completed. Evaluation report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_19_evaluation.json
+2026-04-11 13:27:26,136 | INFO | ml_pipeline.step_19_evaluation | Step 19 completed. Confusion matrix plot saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/plots/evaluation_confusion_matrix.png
+2026-04-11 13:27:26,136 | INFO | ml_pipeline.runner | Running Step 20
+2026-04-11 13:27:26,224 | INFO | ml_pipeline.step_20_deployment | Step 20 completed. Deployment bundle saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/deployment_bundle.joblib
+2026-04-11 13:27:26,224 | INFO | ml_pipeline.step_20_deployment | Step 20 completed. Deployment report saved to /Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_20_deployment.json
+2026-04-11 13:27:26,224 | INFO | ml_pipeline.runner | Pipeline completed successfully

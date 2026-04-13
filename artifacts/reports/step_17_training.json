@@ -1,0 +1,32 @@
+{
+  "step": "Step 17",
+  "name": "Main Model Training",
+  "model_type": "RandomForestClassifier",
+  "model_params": {
+    "n_estimators": 300,
+    "max_depth": null,
+    "min_samples_split": 2,
+    "min_samples_leaf": 1,
+    "random_state": 42
+  },
+  "train_shape": [
+    700,
+    16
+  ],
+  "validation_shape": [
+    150,
+    16
+  ],
+  "metrics_validation": {
+    "accuracy": 0.9133,
+    "precision": 0.9079,
+    "recall": 0.92,
+    "f1": 0.9139
+  },
+  "output_files": {
+    "model": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/main_random_forest.joblib",
+    "validation_predictions": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_17_validation_predictions.csv"
+  },
+  "created_at": "2026-04-11T07:57:16.203684Z",
+  "status": "completed"
+}

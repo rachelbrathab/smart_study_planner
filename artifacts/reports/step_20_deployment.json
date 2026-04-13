@@ -1,0 +1,14 @@
+{
+  "step": "Step 20",
+  "name": "Deployment",
+  "deployment_type": "simulation",
+  "artifacts_used": {
+    "model": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/tuned_random_forest.joblib",
+    "preprocessor": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/preprocessor_step_15.joblib"
+  },
+  "deployment_bundle": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/deployment_bundle.joblib",
+  "sample_prediction_output": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_20_sample_predictions.csv",
+  "api_simulation_status": "success",
+  "created_at": "2026-04-11T07:57:26.224426Z",
+  "status": "completed"
+}

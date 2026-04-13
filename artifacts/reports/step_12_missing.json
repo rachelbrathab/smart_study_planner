@@ -1,0 +1,88 @@
+{
+  "step": "Step 12",
+  "name": "Missing Values",
+  "inputs": {
+    "train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_clean.csv",
+    "validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_clean.csv",
+    "test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_clean.csv"
+  },
+  "outputs": {
+    "train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_missing_handled.csv",
+    "validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_missing_handled.csv",
+    "test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_missing_handled.csv"
+  },
+  "imputation_strategy": {
+    "numeric": "median",
+    "categorical": "mode"
+  },
+  "numeric_impute_values": {
+    "study_hours": 2.85165164999065,
+    "session_duration": 59.83398828038027,
+    "breaks_taken": 3.0,
+    "productivity_score": 86.65052010646112
+  },
+  "categorical_impute_values": {
+    "subject_difficulty": "medium",
+    "time_of_day": "morning"
+  },
+  "missing_before": {
+    "train": {
+      "study_hours": 37,
+      "session_duration": 0,
+      "breaks_taken": 35,
+      "subject_difficulty": 0,
+      "time_of_day": 0,
+      "productivity_score": 31,
+      "session_completed": 0
+    },
+    "validation": {
+      "study_hours": 10,
+      "session_duration": 0,
+      "breaks_taken": 5,
+      "subject_difficulty": 0,
+      "time_of_day": 0,
+      "productivity_score": 12,
+      "session_completed": 0
+    },
+    "test": {
+      "study_hours": 3,
+      "session_duration": 0,
+      "breaks_taken": 10,
+      "subject_difficulty": 0,
+      "time_of_day": 0,
+      "productivity_score": 7,
+      "session_completed": 0
+    }
+  },
+  "missing_after": {
+    "train": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "subject_difficulty": 0,
+      "time_of_day": 0,
+      "productivity_score": 0,
+      "session_completed": 0
+    },
+    "validation": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "subject_difficulty": 0,
+      "time_of_day": 0,
+      "productivity_score": 0,
+      "session_completed": 0
+    },
+    "test": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "subject_difficulty": 0,
+      "time_of_day": 0,
+      "productivity_score": 0,
+      "session_completed": 0
+    }
+  },
+  "created_at": "2026-04-11T07:57:15.701507Z",
+  "status": "completed"
+}

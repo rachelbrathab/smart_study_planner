@@ -1,0 +1,28 @@
+{
+  "step": "Step 5",
+  "name": "Data Source",
+  "source_type": "synthetic",
+  "external_dataset_used": false,
+  "generator_library_stack": [
+    "numpy",
+    "pandas",
+    "scikit-learn"
+  ],
+  "feature_columns": [
+    "study_hours",
+    "session_duration",
+    "breaks_taken",
+    "subject_difficulty",
+    "time_of_day",
+    "productivity_score"
+  ],
+  "target_column": "session_completed",
+  "data_requirements": {
+    "balanced_target": true,
+    "contains_noise": true,
+    "contains_missing_values": true
+  },
+  "justification": "Synthetic data is required by project constraints and enables controlled testing of the complete ML pipeline.",
+  "created_at": "2026-04-11T07:57:14.966903Z",
+  "status": "completed"
+}

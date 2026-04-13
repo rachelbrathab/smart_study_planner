@@ -1,0 +1,9 @@
+{
+  "step": "Step 2",
+  "name": "ML Task Type",
+  "task_type": "classification",
+  "classification_type": "binary",
+  "justification": "The target session_completed has two classes: 0 (not completed) and 1 (completed).",
+  "created_at": "2026-04-11T07:57:14.965879Z",
+  "status": "completed"
+}

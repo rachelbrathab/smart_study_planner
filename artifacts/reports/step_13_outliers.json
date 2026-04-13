@@ -1,0 +1,93 @@
+{
+  "step": "Step 13",
+  "name": "Outliers",
+  "method": "iqr_capping",
+  "inputs": {
+    "train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_missing_handled.csv",
+    "validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_missing_handled.csv",
+    "test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_missing_handled.csv"
+  },
+  "outputs": {
+    "train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_outliers_handled.csv",
+    "validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_outliers_handled.csv",
+    "test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_outliers_handled.csv"
+  },
+  "columns_checked": [
+    "study_hours",
+    "session_duration",
+    "breaks_taken",
+    "productivity_score"
+  ],
+  "train_fitted_bounds": {
+    "study_hours": {
+      "q1": 2.1618117159280423,
+      "q3": 3.4491228484183503,
+      "iqr": 1.287311132490308,
+      "lower": 0.23084501719258044,
+      "upper": 5.380089547153812
+    },
+    "session_duration": {
+      "q1": 47.2697804128136,
+      "q3": 73.05933498733145,
+      "iqr": 25.78955457451785,
+      "lower": 8.585448551036826,
+      "upper": 111.74366684910822
+    },
+    "breaks_taken": {
+      "q1": 1.0,
+      "q3": 4.0,
+      "iqr": 3.0,
+      "lower": -3.5,
+      "upper": 8.5
+    },
+    "productivity_score": {
+      "q1": 68.92835387153781,
+      "q3": 100.0,
+      "iqr": 31.07164612846219,
+      "lower": 22.32088467884452,
+      "upper": 146.6074691926933
+    }
+  },
+  "outlier_counts_before": {
+    "train": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "productivity_score": 0
+    },
+    "validation": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "productivity_score": 0
+    },
+    "test": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "productivity_score": 0
+    }
+  },
+  "outlier_counts_after": {
+    "train": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "productivity_score": 0
+    },
+    "validation": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "productivity_score": 0
+    },
+    "test": {
+      "study_hours": 0,
+      "session_duration": 0,
+      "breaks_taken": 0,
+      "productivity_score": 0
+    }
+  },
+  "created_at": "2026-04-11T07:57:15.724485Z",
+  "status": "completed"
+}

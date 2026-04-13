@@ -1,0 +1,25 @@
+{
+  "step": "Step 16",
+  "name": "Baseline Model",
+  "model_type": "LogisticRegression",
+  "train_shape": [
+    700,
+    16
+  ],
+  "validation_shape": [
+    150,
+    16
+  ],
+  "metrics_validation": {
+    "accuracy": 0.92,
+    "precision": 0.92,
+    "recall": 0.92,
+    "f1": 0.92
+  },
+  "output_files": {
+    "model": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/baseline_logistic_regression.joblib",
+    "validation_predictions": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_16_validation_predictions.csv"
+  },
+  "created_at": "2026-04-11T07:57:15.801358Z",
+  "status": "completed"
+}

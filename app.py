@@ -2,88 +2,29 @@ from flask import Flask, request, render_template, redirect, url_for, session
 from flask import jsonify
 from src.planner import generate_schedule, format_time
 import json
+import csv
 import copy
 import os
-from datetime import datetime, timedelta, date
-from collections import Counter
+from pathlib import Path
+from datetime import datetime, date
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "secret123")
+
+
+@app.context_processor
+def inject_static_version():
+    style_path = Path(app.root_path) / "static" / "style.css"
+    try:
+        version = int(style_path.stat().st_mtime)
+    except OSError:
+        version = 1
+    return {"static_version": version}
 
 POMODORO_TIERS = {
     "light": (25, 5),
     "standard": (50, 10),
     "deep": (90, 15)
-}
-
-DEFAULT_BLOCKED_DOMAINS = [
-    "netflix.com",
-    "youtube.com",
-    "instagram.com",
-    "primevideo.com",
-]
-
-REWARD_UNLOCK_MINUTES = 5
-
-SUBJECT_RELAX_RULES = {
-    "math": ["netflix.com", "primevideo.com"],
-    "reading": ["youtube.com"],
-    "english": ["youtube.com"],
-    "literature": ["youtube.com"],
-}
-
-SUBJECT_POLICY_LIBRARY = {
-    "math": {
-        "name": "Math Drill",
-        "allow_domains": ["khanacademy.org", "desmos.com"],
-        "remove_from_block": ["youtube.com"],
-    },
-    "coding": {
-        "name": "Coding Sprint",
-        "allow_domains": ["stackoverflow.com", "github.com", "developer.mozilla.org"],
-        "remove_from_block": [],
-    },
-    "programming": {
-        "name": "Coding Sprint",
-        "allow_domains": ["stackoverflow.com", "github.com", "developer.mozilla.org"],
-        "remove_from_block": [],
-    },
-    "physics": {
-        "name": "STEM Solve",
-        "allow_domains": ["khanacademy.org", "wikipedia.org"],
-        "remove_from_block": [],
-    },
-    "chemistry": {
-        "name": "STEM Solve",
-        "allow_domains": ["khanacademy.org", "wikipedia.org"],
-        "remove_from_block": [],
-    },
-    "biology": {
-        "name": "STEM Solve",
-        "allow_domains": ["khanacademy.org", "wikipedia.org"],
-        "remove_from_block": [],
-    },
-    "history": {
-        "name": "Theory Review",
-        "allow_domains": ["wikipedia.org", "youtube.com"],
-        "remove_from_block": ["youtube.com"],
-    },
-    "english": {
-        "name": "Language Practice",
-        "allow_domains": ["dictionary.com", "grammarly.com", "youtube.com"],
-        "remove_from_block": ["youtube.com"],
-    },
-}
-
-XP_PER_COMPLETED_SESSION = 10
-XP_STREAK_BONUS_MULTIPLIER = 3
-HARD_MODE_EMERGENCY_LIMIT = 1
-
-DEFAULT_USER_STATS = {
-    "xp": 0,
-    "level": 1,
-    "buddy_email": "",
-    "accountability_enabled": False,
 }
 
 
@@ -134,54 +75,12 @@ def save_plans(data):
         json.dump(data, f, indent=4)
 
 
-def load_user_stats():
+def load_json_file(path_obj):
     try:
-        with open("data/user_stats.json") as f:
-            data = json.load(f)
-            return data if isinstance(data, dict) else {}
-    except:
+        with open(path_obj) as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
         return {}
-
-
-def save_user_stats(data):
-    with open("data/user_stats.json", "w") as f:
-        json.dump(data, f, indent=4)
-
-
-def get_user_stats(username):
-    all_stats = load_user_stats()
-    key = (username or "").strip().lower()
-    login_identity = (username or "").strip()
-    current = all_stats.get(key, {}) if isinstance(all_stats, dict) else {}
-
-    normalized = {
-        **DEFAULT_USER_STATS,
-        **current,
-    }
-    normalized["xp"] = int(normalized.get("xp", 0))
-    normalized["level"] = max(1, int(normalized.get("level", 1)))
-    normalized["accountability_enabled"] = bool(normalized.get("accountability_enabled", False))
-    normalized["buddy_email"] = str(normalized.get("buddy_email", "")).strip() or login_identity
-    return normalized
-
-
-def update_user_stats(username, patch):
-    all_stats = load_user_stats()
-    key = (username or "").strip().lower()
-    login_identity = (username or "").strip()
-    existing = get_user_stats(username)
-    merged = {**existing, **(patch or {})}
-    merged["xp"] = int(merged.get("xp", 0))
-    merged["level"] = max(1, int(merged.get("level", 1)))
-    merged["buddy_email"] = str(merged.get("buddy_email", "")).strip() or login_identity
-    all_stats[key] = merged
-    save_user_stats(all_stats)
-    return merged
-
-
-def level_from_xp(xp):
-    # Linear progression keeps leveling predictable for MVP.
-    return max(1, int(xp // 120) + 1)
 
 
 def update_current_plan_progress():
@@ -220,17 +119,6 @@ def update_current_plan_progress():
     save_plans(plans)
 
 
-def get_progress_snapshot():
-    total_sessions = session.get("total_study_sessions", 0)
-    completed_sessions = session.get("completed_study_sessions", 0)
-    percent = 0 if total_sessions == 0 else round((completed_sessions / total_sessions) * 100)
-    return {
-        "completed_sessions": completed_sessions,
-        "total_sessions": total_sessions,
-        "percent": percent,
-    }
-
-
 def parse_iso_datetime(value):
     if not value:
         return None
@@ -239,49 +127,6 @@ def parse_iso_datetime(value):
         return datetime.fromisoformat(value)
     except (TypeError, ValueError):
         return None
-
-
-def get_active_subject_name():
-    for item in session.get("schedule", []):
-        if item.get("type", "study") != "break":
-            return item.get("subject", "").strip()
-
-    return ""
-
-
-def get_domain_policy_for_subject(active_subject):
-    blocked_domains = list(DEFAULT_BLOCKED_DOMAINS)
-    allowed_domains = []
-    policy_tag = "General Focus"
-
-    subject_value = (active_subject or "").strip().lower()
-    if not subject_value:
-        return blocked_domains, allowed_domains, policy_tag
-
-    for keyword, domains_to_allow in SUBJECT_RELAX_RULES.items():
-        if keyword not in subject_value:
-            continue
-
-        for domain in domains_to_allow:
-            if domain in blocked_domains:
-                blocked_domains.remove(domain)
-                allowed_domains.append(domain)
-
-    for keyword, policy in SUBJECT_POLICY_LIBRARY.items():
-        if keyword not in subject_value:
-            continue
-
-        policy_tag = policy.get("name", policy_tag)
-
-        for domain in policy.get("remove_from_block", []):
-            if domain in blocked_domains:
-                blocked_domains.remove(domain)
-
-        for domain in policy.get("allow_domains", []):
-            if domain not in allowed_domains:
-                allowed_domains.append(domain)
-
-    return blocked_domains, allowed_domains, policy_tag
 
 
 def parse_plan_date(value):
@@ -293,59 +138,6 @@ def parse_plan_date(value):
         return parsed.date()
 
     return None
-
-
-def build_streak_stats(plans):
-    completion_dates = []
-    for plan in plans:
-        if int(plan.get("progress_percent", 0)) < 100:
-            continue
-
-        parsed_date = parse_plan_date(plan.get("date"))
-        if parsed_date:
-            completion_dates.append(parsed_date)
-
-    completion_set = set(completion_dates)
-
-    current_streak = 0
-    cursor = date.today()
-    while cursor in completion_set:
-        current_streak += 1
-        cursor = cursor - timedelta(days=1)
-
-    sorted_dates = sorted(completion_set)
-    best_streak = 0
-    running = 0
-    prev = None
-
-    for day in sorted_dates:
-        if prev and day == prev + timedelta(days=1):
-            running += 1
-        else:
-            running = 1
-
-        best_streak = max(best_streak, running)
-        prev = day
-
-    today = date.today()
-    week_start = today - timedelta(days=6)
-    weekly_plans = []
-
-    for plan in plans:
-        parsed_date = parse_plan_date(plan.get("date"))
-        if not parsed_date:
-            continue
-
-        if week_start <= parsed_date <= today:
-            weekly_plans.append(int(plan.get("progress_percent", 0)))
-
-    weekly_consistency = round(sum(weekly_plans) / len(weekly_plans)) if weekly_plans else 0
-
-    return {
-        "current_streak": current_streak,
-        "best_streak": best_streak,
-        "weekly_consistency": weekly_consistency,
-    }
 
 
 def build_reflection(plan):
@@ -364,127 +156,6 @@ def build_reflection(plan):
         return f"Strong effort. {remaining} block{'s' if remaining != 1 else ''} remained for full completion."
 
     return f"You started the day. {remaining} block{'s' if remaining != 1 else ''} are still available to recover tomorrow."
-
-
-def build_accountability_summary(username):
-    plans = load_plans()
-    user_plans = [p for p in plans if p.get("user") == username]
-    if not user_plans:
-        return "No study history yet. Create your first study plan and complete one block today."
-
-    latest = user_plans[-1]
-    completed = int(latest.get("completed_study_sessions", 0))
-    total = int(latest.get("total_study_sessions", 0))
-    progress = int(latest.get("progress_percent", 0))
-    minutes = int(latest.get("productive_minutes", 0))
-    distractions = int(latest.get("distraction_attempts", 0))
-
-    stats = get_user_stats(username)
-    return (
-        f"Study accountability update for {username}: "
-        f"{completed}/{total} blocks completed ({progress}%), "
-        f"{minutes} productive minutes, "
-        f"{distractions} distraction attempts, "
-        f"XP {stats.get('xp', 0)} (Level {stats.get('level', 1)})."
-    )
-
-
-def build_analytics_snapshot(username):
-    plans = load_plans()
-    user_plans = [p for p in plans if p.get("user") == username]
-
-    total_productive_minutes = sum(int(p.get("productive_minutes", 0)) for p in user_plans)
-    total_focus_starts = sum(int(p.get("focus_start_count", 0)) for p in user_plans)
-    total_distractions = sum(int(p.get("distraction_attempts", 0)) for p in user_plans)
-    total_completed = sum(int(p.get("completed_study_sessions", 0)) for p in user_plans)
-    total_planned = sum(int(p.get("total_study_sessions", 0)) for p in user_plans)
-
-    completion_rate = 0 if total_planned == 0 else round((total_completed / total_planned) * 100)
-    focus_efficiency = 0 if total_focus_starts == 0 else round((total_completed / total_focus_starts) * 100)
-
-    daily_labels = []
-    daily_productive = []
-    daily_completion = []
-    for plan in user_plans[-10:]:
-        day = parse_plan_date(plan.get("date"))
-        daily_labels.append(day.isoformat() if day else "Unknown")
-        daily_productive.append(int(plan.get("productive_minutes", 0)))
-        daily_completion.append(int(plan.get("progress_percent", 0)))
-
-    top_domains = Counter()
-    for plan in user_plans:
-        for domain, count in (plan.get("blocked_domain_hits") or {}).items():
-            top_domains[domain] += int(count)
-
-    top_domains_data = [{"domain": domain, "count": count} for domain, count in top_domains.most_common(5)]
-
-    return {
-        "total_productive_minutes": total_productive_minutes,
-        "total_focus_starts": total_focus_starts,
-        "total_distractions": total_distractions,
-        "completion_rate": completion_rate,
-        "focus_efficiency": focus_efficiency,
-        "daily_labels": daily_labels,
-        "daily_productive": daily_productive,
-        "daily_completion": daily_completion,
-        "top_domains": top_domains_data,
-    }
-
-
-def get_focus_state_snapshot():
-    progress = get_progress_snapshot()
-    requested_focus = bool(session.get("focus_mode_requested", False))
-    has_schedule = progress["total_sessions"] > 0
-    active_subject = get_active_subject_name()
-    hard_mode = bool(session.get("hard_mode", False))
-    break_mode_active = bool(session.get("pomodoro_break_mode", False))
-    emergency_remaining = int(session.get("hard_mode_emergency_remaining", HARD_MODE_EMERGENCY_LIMIT))
-
-    reward_until_value = session.get("reward_unlock_until")
-    reward_until = parse_iso_datetime(reward_until_value)
-    now = datetime.now()
-    reward_active = bool(reward_until and reward_until > now)
-    reward_remaining_seconds = 0
-    if reward_active and reward_until:
-        reward_remaining_seconds = max(0, int((reward_until - now).total_seconds()))
-
-    # Disable focus mode only when no schedule exists.
-    focus_mode = requested_focus and has_schedule
-    blocked_domains = []
-    allowed_domains = []
-    policy_tag = "General Focus"
-
-    if focus_mode:
-        if reward_active:
-            blocked_domains = []
-            allowed_domains = ["reward-window"]
-        elif break_mode_active:
-            blocked_domains = []
-            allowed_domains = ["pomodoro-break-window"]
-        else:
-            blocked_domains, allowed_domains, policy_tag = get_domain_policy_for_subject(active_subject)
-
-            # Automatically unlock YouTube at 80%.
-            if progress["percent"] >= 80 and "youtube.com" in blocked_domains:
-                blocked_domains.remove("youtube.com")
-                if "youtube.com" not in allowed_domains:
-                    allowed_domains.append("youtube.com")
-    return {
-        "focus_mode": focus_mode,
-        "session_active": focus_mode,
-        "blocked_domains": blocked_domains,
-        "allowed_domains": allowed_domains,
-        "has_schedule": has_schedule,
-        "active_subject": active_subject,
-        "reward_active": reward_active,
-        "reward_remaining_seconds": reward_remaining_seconds,
-        "reward_unlock_until": reward_until_value if reward_active else None,
-        "break_mode_active": break_mode_active,
-        "hard_mode": hard_mode,
-        "emergency_break_remaining": emergency_remaining,
-        "policy_tag": policy_tag,
-        **progress,
-    }
 
 
 def convert_time(t):
@@ -518,8 +189,6 @@ def login():
         for u in users:
             if u["username"] == request.form["username"] and u["password"] == request.form["password"]:
                 session["user"] = u["username"]
-                # Keep buddy email synced to the identity used to log in.
-                update_user_stats(session["user"], {"buddy_email": session["user"]})
                 return redirect("/")
         return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
@@ -541,9 +210,6 @@ def input_page():
         count = max(1, int(request.form.get("numSubjects", 1)))
         selected_tier = request.form.get("pomodoroTier", "standard")
         study_minutes, break_minutes = POMODORO_TIERS.get(selected_tier, POMODORO_TIERS["standard"])
-        accountability_enabled = request.form.get("accountabilityEnabled") == "on"
-        buddy_email = session.get("user", "").strip()
-        hard_mode = request.form.get("hardMode") == "on"
 
         subjects = []
         for i in range(1, count + 1):
@@ -591,12 +257,6 @@ def input_page():
         session["total_study_sessions"] = sum(1 for item in schedule if item.get("type", "study") != "break")
         session["completed_study_sessions"] = 0
         session["completed_history"] = []
-        session["focus_mode_requested"] = False
-        session["reward_unlock_until"] = None
-        session["pomodoro_break_mode"] = False
-        session["hard_mode"] = hard_mode
-        session["hard_mode_emergency_remaining"] = 0 if hard_mode else HARD_MODE_EMERGENCY_LIMIT
-        session["goal_confirmations"] = []
 
         # SAVE PLAN
         plans = load_plans()
@@ -610,28 +270,13 @@ def input_page():
             "total_study_sessions": session.get("total_study_sessions", 0),
             "progress_percent": 0,
             "productive_minutes": 0,
-            "focus_start_count": 0,
-            "focus_stop_count": 0,
-            "distraction_attempts": 0,
-            "blocked_domain_hits": {},
-            "goal_confirmations": [],
-            "hard_mode": hard_mode,
-            "accountability_enabled": accountability_enabled,
-            "buddy_email": buddy_email,
         })
         save_plans(plans)
         session["current_plan_date"] = plan_date
-        update_user_stats(
-            session["user"],
-            {
-                "accountability_enabled": accountability_enabled,
-                "buddy_email": buddy_email,
-            }
-        )
 
         return redirect("/schedule")
 
-    return render_template("input.html", login_email=session.get("user", ""))
+    return render_template("input.html")
 
 
 # ---------- PAGES ----------
@@ -657,13 +302,6 @@ def progress():
     total_sessions = session.get("total_study_sessions", len(study_only))
     completed_sessions = session.get("completed_study_sessions", 0)
     percent = 0 if total_sessions == 0 else round((completed_sessions / total_sessions) * 100)
-    focus_state = get_focus_state_snapshot()
-    plans = load_plans()
-    user_plans = [p for p in plans if p.get("user") == session.get("user")]
-    streak_stats = build_streak_stats(user_plans)
-    user_stats = get_user_stats(session.get("user"))
-    accountability_summary = build_accountability_summary(session.get("user"))
-    xp_to_next_level = max(0, (user_stats["level"] * 120) - user_stats["xp"])
 
     return render_template(
         "progress.html",
@@ -674,107 +312,7 @@ def progress():
         completed_sessions=completed_sessions,
         total_sessions=total_sessions,
         percent=percent,
-        focus_state=focus_state,
-        streak_stats=streak_stats,
-        user_stats=user_stats,
-        xp_to_next_level=xp_to_next_level,
-        accountability_summary=accountability_summary,
     )
-
-
-@app.route("/focus-mode/start", methods=["POST"])
-def start_focus_mode():
-    if "user" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    session["focus_mode_requested"] = True
-    session["pomodoro_break_mode"] = False
-
-    plans = load_plans()
-    for plan in reversed(plans):
-        if plan.get("user") == session.get("user") and plan.get("date") == session.get("current_plan_date"):
-            plan["focus_start_count"] = int(plan.get("focus_start_count", 0)) + 1
-            break
-    save_plans(plans)
-
-    return jsonify(get_focus_state_snapshot())
-
-
-@app.route("/focus-mode/stop", methods=["POST"])
-def stop_focus_mode():
-    if "user" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    payload = request.get_json(silent=True) or {}
-    reflection = (payload.get("reflection") or "").strip()
-
-    if not reflection:
-        return jsonify({"error": "Goal confirmation required", "requires_confirmation": True}), 400
-
-    session["focus_mode_requested"] = False
-    session["pomodoro_break_mode"] = False
-
-    goal_confirmations = session.get("goal_confirmations", [])
-    goal_confirmations.append({"time": datetime.now().isoformat(), "reflection": reflection})
-    session["goal_confirmations"] = goal_confirmations
-
-    plans = load_plans()
-    for plan in reversed(plans):
-        if plan.get("user") == session.get("user") and plan.get("date") == session.get("current_plan_date"):
-            plan["focus_stop_count"] = int(plan.get("focus_stop_count", 0)) + 1
-            plan["distraction_attempts"] = int(plan.get("distraction_attempts", 0)) + 1
-            confirmations = plan.get("goal_confirmations", [])
-            confirmations.append({"time": datetime.now().isoformat(), "reflection": reflection})
-            plan["goal_confirmations"] = confirmations
-            break
-    save_plans(plans)
-
-    return jsonify(get_focus_state_snapshot())
-
-
-@app.route("/focus-mode/break-start", methods=["POST"])
-def start_break_mode():
-    if "user" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    session["pomodoro_break_mode"] = True
-    return jsonify(get_focus_state_snapshot())
-
-
-@app.route("/focus-mode/break-end", methods=["POST"])
-def end_break_mode():
-    if "user" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    session["pomodoro_break_mode"] = False
-    return jsonify(get_focus_state_snapshot())
-
-
-@app.route("/focus-mode/emergency-use", methods=["POST"])
-def use_emergency_break():
-    if "user" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    hard_mode = bool(session.get("hard_mode", False))
-    remaining = int(session.get("hard_mode_emergency_remaining", HARD_MODE_EMERGENCY_LIMIT))
-
-    if hard_mode and remaining <= 0:
-        return jsonify({"ok": False, "error": "Hard mode: emergency breaks exhausted"}), 403
-
-    session["hard_mode_emergency_remaining"] = max(0, remaining - 1)
-    return jsonify({
-        "ok": True,
-        "hard_mode": hard_mode,
-        "emergency_break_remaining": session["hard_mode_emergency_remaining"],
-    })
-
-
-@app.route("/focus-state", methods=["GET"])
-def focus_state():
-    if "user" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    return jsonify(get_focus_state_snapshot())
 
 
 @app.route("/complete-session", methods=["POST"])
@@ -802,36 +340,18 @@ def complete_session():
             completed_history = session.get("completed_history", [])
             completed_history.append({"item": item, "index": index})
             session["completed_history"] = completed_history
-            session["reward_unlock_until"] = (datetime.now() + timedelta(minutes=REWARD_UNLOCK_MINUTES)).isoformat()
             break
 
     session["schedule"] = current_schedule
     update_current_plan_progress()
 
     plans = load_plans()
-    earned_xp = 0
-    completion_bonus = 0
     for plan in reversed(plans):
         if plan.get("user") == session.get("user") and plan.get("date") == session.get("current_plan_date"):
             if completed_item:
                 plan["productive_minutes"] = int(plan.get("productive_minutes", 0)) + int(completed_item.get("duration_minutes", session.get("pomodoro", {}).get("study_minutes", 0)))
-                earned_xp = XP_PER_COMPLETED_SESSION
-
-                completed = int(plan.get("completed_study_sessions", 0))
-                total = int(plan.get("total_study_sessions", 0))
-                if total > 0 and completed >= total and not plan.get("completion_bonus_awarded"):
-                    completion_bonus = XP_PER_COMPLETED_SESSION * XP_STREAK_BONUS_MULTIPLIER
-                    plan["completion_bonus_awarded"] = True
-
-                earned_xp += completion_bonus
-            plan["xp_earned"] = int(plan.get("xp_earned", 0)) + earned_xp
             break
     save_plans(plans)
-
-    user_stats = get_user_stats(session.get("user"))
-    new_xp = user_stats["xp"] + earned_xp
-    new_level = level_from_xp(new_xp)
-    update_user_stats(session.get("user"), {"xp": new_xp, "level": new_level})
 
     study_only = [item for item in current_schedule if item.get("type", "study") != "break"]
     total_sessions = session.get("total_study_sessions", len(study_only))
@@ -853,11 +373,6 @@ def complete_session():
         "current_study_minutes": current_study_minutes,
         "can_undo": bool(session.get("completed_history")),
         "remaining_subjects": [item.get("subject", "") for item in study_only],
-        "focus_state": get_focus_state_snapshot(),
-        "xp_earned": earned_xp,
-        "completion_bonus": completion_bonus,
-        "xp_total": new_xp,
-        "level": new_level,
     })
 
 
@@ -883,7 +398,6 @@ def undo_session():
             "can_undo": False,
             "restored_item": None,
             "remaining_subjects": [item.get("subject", "") for item in current_schedule if item.get("type", "study") != "break"],
-            "focus_state": get_focus_state_snapshot(),
         })
 
     last_completed = completed_history.pop()
@@ -900,7 +414,6 @@ def undo_session():
     update_current_plan_progress()
 
     plans = load_plans()
-    xp_removed = 0
     removed_minutes = 0
     if restored_item:
         removed_minutes = int(restored_item.get("duration_minutes", session.get("pomodoro", {}).get("study_minutes", 0)))
@@ -909,15 +422,8 @@ def undo_session():
         if plan.get("user") == session.get("user") and plan.get("date") == session.get("current_plan_date"):
             if restored_item:
                 plan["productive_minutes"] = max(0, int(plan.get("productive_minutes", 0)) - removed_minutes)
-                xp_removed = XP_PER_COMPLETED_SESSION
-                plan["xp_earned"] = max(0, int(plan.get("xp_earned", 0)) - xp_removed)
             break
     save_plans(plans)
-
-    user_stats = get_user_stats(session.get("user"))
-    next_xp = max(0, user_stats["xp"] - xp_removed)
-    next_level = level_from_xp(next_xp)
-    update_user_stats(session.get("user"), {"xp": next_xp, "level": next_level})
 
     study_only = [item for item in current_schedule if item.get("type", "study") != "break"]
     total_sessions = session.get("total_study_sessions", len(study_only))
@@ -940,9 +446,6 @@ def undo_session():
         "can_undo": bool(completed_history),
         "restored_item": restored_item,
         "remaining_subjects": [item.get("subject", "") for item in study_only],
-        "focus_state": get_focus_state_snapshot(),
-        "xp_total": next_xp,
-        "level": next_level,
     })
 
 @app.route("/history")
@@ -952,6 +455,7 @@ def history():
 
     plans = load_plans()
     user_plans = [p for p in plans if p["user"] == session["user"]]
+    user_plans.sort(key=lambda p: parse_plan_date(p.get("date")) or date.min, reverse=True)
 
     history_plans = []
     for plan in user_plans:
@@ -998,71 +502,133 @@ def history():
         normalized_plan["reflection"] = build_reflection(normalized_plan)
         history_plans.append(normalized_plan)
 
-    subject_counter = Counter()
-    for plan in user_plans:
-        for item in plan.get("schedule", []):
-            if item.get("type") == "break":
-                continue
-            subject = item.get("subject", "").strip()
-            if subject:
-                subject_counter[subject] += 1
-
-    chart_labels = list(subject_counter.keys())
-    chart_data = list(subject_counter.values())
-    streak_stats = build_streak_stats(history_plans)
-    analytics = build_analytics_snapshot(session.get("user"))
-    user_stats = get_user_stats(session.get("user"))
-
     return render_template(
         "history.html",
         plans=history_plans,
-        chart_labels=chart_labels,
-        chart_data=chart_data,
-        streak_stats=streak_stats,
-        analytics=analytics,
-        user_stats=user_stats,
     )
 
 
-@app.route("/analytics")
-def analytics():
+@app.route("/dashboard")
+def ml_dashboard():
     if "user" not in session:
         return redirect("/login")
 
-    analytics_data = build_analytics_snapshot(session.get("user"))
-    return render_template("analytics.html", analytics=analytics_data)
+    root_dir = Path(__file__).resolve().parent
+    reports_dir = root_dir / "artifacts" / "reports"
+    plots_dir = root_dir / "artifacts" / "plots"
+    models_dir = root_dir / "artifacts" / "models"
 
+    step_descriptions = {
+        1: "Define business objective for predicting study-session completion.",
+        2: "Declare ML task type as binary classification.",
+        3: "Set target label to session_completed.",
+        4: "Define evaluation metrics: accuracy, precision, recall, and F1.",
+        5: "Declare synthetic-only data source strategy.",
+        6: "Generate and ingest synthetic study-session dataset.",
+        7: "Run exploratory data analysis and export plots.",
+        8: "Validate schema, nulls, duplicates, and value ranges.",
+        9: "Check label distribution and target quality.",
+        10: "Perform stratified train/validation/test split.",
+        11: "Clean data and normalize column structures.",
+        12: "Handle missing values using train-fitted imputations.",
+        13: "Cap outliers with train-fitted IQR bounds.",
+        14: "Create engineered features from study behavior signals.",
+        15: "Apply preprocessing: scaling + encoding and save transformer.",
+        16: "Train baseline logistic regression model.",
+        17: "Train main random forest model.",
+        18: "Tune hyperparameters using cross-validated grid search.",
+        19: "Evaluate on test data with confusion matrix and feature importance.",
+        20: "Package deployment bundle and simulate prediction API.",
+    }
 
-@app.route("/accountability")
-def accountability():
-    if "user" not in session:
-        return redirect("/login")
+    step_rows = []
+    completed_steps = 0
+    for i in range(1, 21):
+        matches = sorted(reports_dir.glob(f"step_{i:02d}*.json"))
+        is_complete = bool(matches)
+        if is_complete:
+            completed_steps += 1
 
-    stats = get_user_stats(session.get("user"))
-    summary = build_accountability_summary(session.get("user"))
-    return render_template("accountability.html", stats=stats, summary=summary)
+        step_rows.append(
+            {
+                "step": f"Step {i}",
+                "status": "Completed" if is_complete else "Pending",
+                "report": matches[0].name if is_complete else "-",
+                "description": step_descriptions.get(i, "No description available."),
+            }
+        )
 
+    required_artifacts = [
+        reports_dir / "step_20_deployment.json",
+        reports_dir / "step_19_evaluation.json",
+        reports_dir / "step_20_sample_predictions.csv",
+        models_dir / "deployment_bundle.joblib",
+        models_dir / "tuned_random_forest.joblib",
+        plots_dir / "evaluation_confusion_matrix.png",
+    ]
+    missing_artifacts = [str(path.relative_to(root_dir)) for path in required_artifacts if not path.exists()]
+    pipeline_done = completed_steps == 20 and not missing_artifacts
 
-@app.route("/analytics/domain-hit", methods=["POST"])
-def analytics_domain_hit():
-    if "user" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
+    baseline_report = load_json_file(reports_dir / "step_16_baseline.json")
+    main_report = load_json_file(reports_dir / "step_17_training.json")
+    tuned_report = load_json_file(reports_dir / "step_18_tuning.json")
+    eval_report = load_json_file(reports_dir / "step_19_evaluation.json")
+    deploy_report = load_json_file(reports_dir / "step_20_deployment.json")
 
-    payload = request.get_json(silent=True) or {}
-    domain = str(payload.get("domain", "")).strip().lower()
-    if not domain:
-        return jsonify({"ok": False, "error": "Missing domain"}), 400
+    metrics = {
+        "baseline": baseline_report.get("metrics_validation", {}),
+        "main": main_report.get("metrics_validation", {}),
+        "tuned": tuned_report.get("metrics_validation", {}),
+        "test": eval_report.get("metrics_test", {}),
+    }
 
-    plans = load_plans()
-    for plan in reversed(plans):
-        if plan.get("user") == session.get("user") and plan.get("date") == session.get("current_plan_date"):
-            hits = plan.get("blocked_domain_hits", {})
-            hits[domain] = int(hits.get(domain, 0)) + 1
-            plan["blocked_domain_hits"] = hits
-            break
-    save_plans(plans)
+    confusion = eval_report.get("confusion_matrix", {})
+    confusion_labels = ["TN", "FP", "FN", "TP"]
+    confusion_values = [
+        confusion.get("tn", 0),
+        confusion.get("fp", 0),
+        confusion.get("fn", 0),
+        confusion.get("tp", 0),
+    ]
 
-    return jsonify({"ok": True})
+    feature_rows = []
+    feature_path = reports_dir / "step_19_feature_importance.csv"
+    if feature_path.exists():
+        with open(feature_path, newline="") as csv_file:
+            reader = csv.DictReader(csv_file)
+            for idx, row in enumerate(reader):
+                if idx >= 10:
+                    break
+                feature_rows.append(
+                    {
+                        "feature": row.get("feature", ""),
+                        "importance": round(float(row.get("importance", 0)), 4),
+                    }
+                )
+
+    sample_rows = []
+    sample_path = reports_dir / "step_20_sample_predictions.csv"
+    if sample_path.exists():
+        with open(sample_path, newline="") as csv_file:
+            reader = csv.DictReader(csv_file)
+            for idx, row in enumerate(reader):
+                if idx >= 5:
+                    break
+                sample_rows.append(row)
+
+    return render_template(
+        "dashboard.html",
+        step_rows=step_rows,
+        completed_steps=completed_steps,
+        pipeline_done=pipeline_done,
+        missing_artifacts=missing_artifacts,
+        metrics=metrics,
+        confusion_labels=confusion_labels,
+        confusion_values=confusion_values,
+        feature_rows=feature_rows,
+        sample_rows=sample_rows,
+        deployment_status=deploy_report.get("api_simulation_status", "not_run"),
+    )
 
 
 if __name__ == "__main__":

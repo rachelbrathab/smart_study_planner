@@ -1,0 +1,9 @@
+{
+  "step": "Step 1",
+  "name": "Business Goal",
+  "problem_statement": "Predict whether a study session will be completed.",
+  "business_value": "Helps students identify sessions at risk and improve planning outcomes.",
+  "target_outcome": "Increase study-session completion consistency over time.",
+  "created_at": "2026-04-11T07:57:14.965430Z",
+  "status": "completed"
+}

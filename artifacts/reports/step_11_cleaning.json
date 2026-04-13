@@ -1,0 +1,60 @@
+{
+  "step": "Step 11",
+  "name": "Cleaning",
+  "inputs": {
+    "train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_raw.csv",
+    "validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_raw.csv",
+    "test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_raw.csv"
+  },
+  "outputs": {
+    "train": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/train_clean.csv",
+    "validation": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/validation_clean.csv",
+    "test": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/data/test_clean.csv"
+  },
+  "summary": {
+    "train": {
+      "rows_before": 700,
+      "rows_after": 700,
+      "duplicates_removed": 0,
+      "dtype_summary": {
+        "study_hours": "float64",
+        "session_duration": "float64",
+        "breaks_taken": "float64",
+        "subject_difficulty": "str",
+        "time_of_day": "str",
+        "productivity_score": "float64",
+        "session_completed": "Int64"
+      }
+    },
+    "validation": {
+      "rows_before": 150,
+      "rows_after": 150,
+      "duplicates_removed": 0,
+      "dtype_summary": {
+        "study_hours": "float64",
+        "session_duration": "float64",
+        "breaks_taken": "float64",
+        "subject_difficulty": "str",
+        "time_of_day": "str",
+        "productivity_score": "float64",
+        "session_completed": "Int64"
+      }
+    },
+    "test": {
+      "rows_before": 150,
+      "rows_after": 150,
+      "duplicates_removed": 0,
+      "dtype_summary": {
+        "study_hours": "float64",
+        "session_duration": "float64",
+        "breaks_taken": "float64",
+        "subject_difficulty": "str",
+        "time_of_day": "str",
+        "productivity_score": "float64",
+        "session_completed": "Int64"
+      }
+    }
+  },
+  "created_at": "2026-04-11T07:57:15.686852Z",
+  "status": "completed"
+}

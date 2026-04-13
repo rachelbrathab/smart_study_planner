@@ -1,0 +1,11 @@
+{
+  "step": "Step 3",
+  "name": "Target Label",
+  "target_column": "session_completed",
+  "target_type": "binary",
+  "negative_class": "0 = session not completed",
+  "positive_class": "1 = session completed",
+  "justification": "This target directly represents study session outcome and supports binary classification.",
+  "created_at": "2026-04-11T07:57:14.966241Z",
+  "status": "completed"
+}

@@ -1,0 +1,53 @@
+{
+  "step": "Step 18",
+  "name": "Hyperparameter Tuning",
+  "search_method": "GridSearchCV",
+  "cv_folds": 3,
+  "scoring": "f1",
+  "param_grid": {
+    "n_estimators": [
+      150,
+      300
+    ],
+    "max_depth": [
+      null,
+      8,
+      12
+    ],
+    "min_samples_split": [
+      2,
+      5
+    ],
+    "min_samples_leaf": [
+      1,
+      2
+    ]
+  },
+  "best_params": {
+    "max_depth": 8,
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "n_estimators": 150
+  },
+  "best_cv_score_f1": 0.937,
+  "validation_metrics": {
+    "accuracy": 0.9067,
+    "precision": 0.9067,
+    "recall": 0.9067,
+    "f1": 0.9067
+  },
+  "train_shape": [
+    700,
+    16
+  ],
+  "validation_shape": [
+    150,
+    16
+  ],
+  "output_files": {
+    "tuned_model": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/models/tuned_random_forest.joblib",
+    "validation_predictions": "/Users/rachelbrathab/Desktop/smart_study_planner/artifacts/reports/step_18_validation_predictions.csv"
+  },
+  "created_at": "2026-04-11T07:57:26.008551Z",
+  "status": "completed"
+}

@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>ML Pipeline Dashboard</h2>
+<p class="timer-meta">A history-style dashboard to verify all 20 ML steps are completed.</p>
+
+<div class="card dashboard-index-card">
+    <h3>Quick Index</h3>
+    <div class="dashboard-index">
+        <a href="#verification-snapshot">Verification</a>
+        <a href="#step-status">Step Status</a>
+        <a href="#metrics-overview">Metrics</a>
+        <a href="#confusion-matrix">Confusion Matrix</a>
+        <a href="#feature-importance">Feature Importance</a>
+        <a href="#deployment-samples">Deployment Samples</a>
+    </div>
+</div>
+
+<div class="card" id="verification-snapshot">
+    <h3>Verification Snapshot</h3>
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-value">{{ completed_steps }}/20</div>
+            <div class="summary-label">Steps completed</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value">{{ "DONE" if pipeline_done else "PENDING" }}</div>
+            <div class="summary-label">Pipeline status</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value">{{ missing_artifacts|length }}</div>
+            <div class="summary-label">Missing required artifacts</div>
+        </div>
+    </div>
+
+    {% if pipeline_done %}
+    <p class="reflection-text">Verification passed. All 20 steps and deployment artifacts are available.</p>
+    {% else %}
+    <p class="reflection-text">Verification incomplete. Generate missing artifacts to complete the pipeline.</p>
+    <ul>
+        {% for item in missing_artifacts %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+<div class="card" id="step-status">
+    <h3>Step-by-Step Status</h3>
+    <div class="step-grid">
+        {% for row in step_rows %}
+        <div class="step-status-card">
+            <div class="step-status-head">
+                <strong>{{ row.step }}</strong>
+                <span class="status-badge {{ 'status-complete' if row.status == 'Completed' else 'status-pending' }}">{{ row.status }}</span>
+            </div>
+            <p class="step-description">{{ row.description }}</p>
+            <p class="timer-meta">Report: {{ row.report }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card" id="metrics-overview">
+    <h3>Model Metrics Overview</h3>
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-value">{{ metrics.baseline.f1 if metrics.baseline else "-" }}</div>
+            <div class="summary-label">Baseline F1</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value">{{ metrics.main.f1 if metrics.main else "-" }}</div>
+            <div class="summary-label">Main Model F1</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value">{{ metrics.tuned.f1 if metrics.tuned else "-" }}</div>
+            <div class="summary-label">Tuned Model F1</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value">{{ metrics.test.f1 if metrics.test else "-" }}</div>
+            <div class="summary-label">Test F1</div>
+        </div>
+    </div>
+</div>
+
+<div class="card" id="confusion-matrix">
+    <h3>Confusion Matrix Breakdown</h3>
+    <canvas id="confusionChart"></canvas>
+</div>
+
+<div class="card" id="feature-importance">
+    <h3>Top Feature Importance</h3>
+    {% if feature_rows %}
+    <div class="table-scroll">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Importance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in feature_rows %}
+                <tr>
+                    <td>{{ row.feature }}</td>
+                    <td>{{ row.importance }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No feature-importance artifact found yet.</p>
+    {% endif %}
+</div>
+
+<div class="card" id="deployment-samples">
+    <h3>Step 20 Deployment Samples</h3>
+    <p class="timer-meta">API simulation status: {{ deployment_status }}</p>
+    {% if sample_rows %}
+    <div class="sample-grid">
+        {% for row in sample_rows %}
+        <div class="sample-card">
+            <h4>Sample {{ loop.index }}</h4>
+            <div class="sample-kv-grid">
+                {% for key, value in row.items() %}
+                <div class="sample-kv-item">
+                    <div class="sample-k">{{ key.replace('_', ' ') }}</div>
+                    <div class="sample-v">{{ value }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No sample predictions found yet.</p>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const labels = {{ confusion_labels | tojson }};
+const values = {{ confusion_values | tojson }};
+
+if (labels.length > 0) {
+    new Chart(document.getElementById("confusionChart"), {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Count",
+                data: values,
+                backgroundColor: "rgba(33, 53, 55, 0.8)",
+                borderColor: "rgba(33, 53, 55, 1)",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+}
+</script>
+
+{% endblock %}
